@@ -1,0 +1,8 @@
+channels:
+    - bioconda
+    - conda-forge
+dependencies:
+    - ncbi-genome-download==0.3.0
+    - biopython==1.79
+    - ipykernel==5.5.5
+
