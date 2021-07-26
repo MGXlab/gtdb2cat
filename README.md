@@ -22,6 +22,8 @@ For fetching protein files from the NCBI ftp and parsing the fasta files
 - `ncbi-genome-download` (`0.3.0` was used here)
 - `biopython` (`1.79` was used here)
 
+CAT itself: `cat` (`5.2.3` was used here)
+
 All other stuff is in standard `python 3.9.4`.
 
 * **Recommended**
@@ -125,5 +127,48 @@ $ cat results/db/gtdb.nr.fa | gzip -c > results/db/gtdb.nr.gz
 $ cat results/db/prot.accession2taxid.txt | gzip -c > results/db/prot.taxid2accession.gz
 
 # Optionally remove the original files if gzip finished successfully.
+```
+
+# CAT database creation
+
+Use the `--existing` option with `CAT prepare`.
+The `prepare` module checks for the existence of certain files based on their 
+names, so it needs to be fooled.
+
+1. Prepare some clean dirs and copy/rename/move files accordingly
+
+```
+## <date> is of the form YYYY-MM-DD
+$ mkdir -p results/CAT_prepare/CAT_taxonomy.<date>
+$ mkdir -p results/CAT_preapare/CAT_database.<date>
+
+# Copy the required files
+
+## Sequences
+$ mv results/db/gtdb.nr.gz results/CAT_prepare/CAT_database.<date>/<date>.nr.gz
+
+## Taxonomy
+$ mv results/db/prot.accession2taxid.gz results/CAT_prepare/CAT_taxonomy.<date>/<date>.prot.accession2taxid.FULL.gz
+
+$ mv results/taxonomy/names.dmp results/CAT_prepare/CAT_taxonomy.<date>/names.dmp
+
+$ mv results/taxonomy/nodes.dmp results/CAT_prepare/CAT_taxonomy.<date>/nodes.dmp
+
+```
+2. Launch the job
+
+* Don't forget to activate the environment, or make sure you have `CAT` and 
+`DIAMOND` available in ypur `$PATH`.
+
+* Make sure you are on a machine with enough memory (at least `200GB`). 
+
+```
+# Get in the dir from above
+$ cd results/CAT_prepare
+
+# Do it
+$ CAT prepare --existing --verbose \
+-d CAT_database.<date> \
+-t CAT_taxonomy.<date>
 ```
 
