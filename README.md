@@ -44,7 +44,8 @@ You might need to install `nb_conda_kernels` in the environment you are
 running jupyter from, to make the `gtdb` kernel available.
 
 Testing this:
-You can used a platform specific environmnet provided within the `conda_envs` 
+
+You can use a platform specific environmnet provided within the `conda_envs` 
 directory to get the exact same versions of packages, always. 
 Use the appropriate lock file for your platform. E.g if you are on `OSX` 
 
@@ -56,7 +57,10 @@ These files were produced with
 [conda-lock](https://github.com/conda-incubator/conda-lock/) and
 
 ```
-$ conda-lock -f environment.yaml -p osx-64 -p linux-64
+$ conda-lock -f environment.yaml \
+--filename-template conda_envs/conda-{platform}.lock
+
+# Windows fails...  Microtears (TM)
 ```
 
 ## Usage
